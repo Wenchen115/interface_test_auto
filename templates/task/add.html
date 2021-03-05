@@ -1,0 +1,122 @@
+{% extends "manage.html" %}
+{% block manage %}
+
+    <div class="container-fluid p-0">
+
+        <div class="row mb-2 mb-xl-3">
+            <div class="col-auto d-none d-sm-block">
+                <h3>新增任务</h3>
+            </div>
+        </div>
+
+        <div class="card flex-fill">
+            <div id="datatables-dashboard-projects_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6"></div>
+                    <div class="col-sm-12 col-md-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div style="margin-left: 20px;margin-right: 20px;width: 50%; padding: 22px">
+
+                            <div class="input-group option">
+                                <span class="input-group-addon option-tile">名称：</span>
+                                <input id="task_name" type="text" class="form-control">
+                            </div>
+
+                            <div style="margin-top: 30px;" class="input-group option">
+                                <span class="input-group-addon option-tile">描述：</span>
+                                <textarea id="task_desc" class="form-control" rows="3" name=textarea></textarea>
+                            </div>
+
+                            <div style="margin-top: 30px;" class="input-group option">
+                                <span class="input-group-addon option-tile">用例：</span>
+                                <div class="card-body">
+                                    <ul id="treeDemo" class="ztree"></ul>
+                                </div>
+
+                            </div>
+                            <br>
+                            <button class="btn btn-success" type="submit" onclick="add_task()">保存</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers"
+                             id="datatables-dashboard-projects_paginate">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <link href="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.42/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+    <script crossorigin="anonymous" integrity="sha384-WdTQ5eBleoXPmG+KBgkZOGy3leFEaH5jIYcoW6IRDfeJwMxbkUeQw5LIYFp6bobX"
+            src="https://lib.baomitu.com/jquery/1.4.2/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.42/js/jquery.ztree.all.js"></script>
+    <script type="application/javascript">
+        var zTreeObj;
+        // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+        var setting;
+        var zNodes = []
+        // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+
+        $(document).ready(function () {
+            setting = {
+                check: {
+                    enable: true,
+                    chkStyle: "checkbox"
+                }
+            };
+            $.get("/task/case_node/", {},
+                function (resp) {
+                    console.log("data----->", resp.data)
+                    zNodes = resp.data
+                    zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                });
+        });
+
+        function add_task() {
+            var taskName = $('#task_name').val();
+            var taskDesc = $('#task_desc').val();
+
+            if (taskName == "") {
+                alert("任务的名称不能为空！");
+                return;
+            }
+
+            zTreeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = zTreeObj.getCheckedNodes(true);
+
+            var cases = new Array();
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].isParent == false) {
+                    console.log("节点id:" + nodes[i].id);  //获取选中节点的值
+                    cases.push(nodes[i].id);
+                }
+
+            }
+
+            //将列表转为字典
+            var casesStr = JSON.stringify(cases);
+
+            console.log("cases", casesStr);
+
+            $.post("/task/save_task/", {
+                    tid: 0,
+                    name: taskName,
+                    desc: taskDesc,
+                    cases: casesStr
+                },
+                function (resp) {
+                    if (resp.status == 10200) {
+                        window.alert("创建任务成功！")
+                    }
+                });
+        }
+
+    </script>
+{% endblock %}

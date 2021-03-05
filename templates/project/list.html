@@ -1,0 +1,138 @@
+{% extends "manage.html" %}<!--继承manage页面的内容-->
+{% block manage %}
+
+    <div class="container-fluid p-0">
+
+        <div class="row mb-2 mb-xl-3">
+            <div class="col-auto d-none d-sm-block">
+                <h3>项目列表</h3>
+            </div>
+        </div>
+
+        <div class="card flex-fill">
+            <div class="card-header">
+
+                {#                        <h5 class="card-title mb-0">Latest Projects</h5>#}
+                <button onclick="add()" type="button" class="btn btn-success" style="float: right">+新增项目</button>
+            </div>
+            <div id="datatables-dashboard-projects_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6"></div>
+                    <div class="col-sm-12 col-md-6"></div>
+                </div>
+
+                <!--列表-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="datatables-dashboard-projects"
+                               class="table table-striped my-0 dataTable no-footer" role="grid"
+                               aria-describedby="datatables-dashboard-projects_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-sort="ascending" aria-label="ID: activate to sort column descending">
+                                    ID
+                                </th>
+                                <th class="sorting_asc" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-sort="ascending" aria-label="Name: activate to sort column descending">
+                                    名称
+                                </th>
+                                <th class="d-none d-xl-table-cell sorting" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-label="describe: activate to sort column ascending">描述
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="datatables-dashboard-projects"
+                                    rowspan="1" colspan="1"
+                                    aria-label="Status: activate to sort column ascending">状态
+                                </th>
+                                <th class="d-none d-xl-table-cell sorting" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-label="Update Date: activate to sort column ascending">更新时间
+                                </th>
+
+                                <th class="d-none d-md-table-cell sorting" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-label="Create Date: activate to sort column ascending">创建时间
+                                </th>
+                                <th class="d-none d-md-table-cell sorting" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-label="Create Date: activate to sort column ascending">操作
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <!--循环取数据表中的数据，展示在列表中-->
+                            {% for p in projects %}
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">{{ p.id }}</td>
+                                    <td class="d-none d-xl-table-cell">{{ p.name }}</td>
+                                    <td class="d-none d-xl-table-cell">{{ p.describe }}</td>
+                                    <td><span class="badge badge-success">{{ p.status }}</span></td>
+                                    <td class="d-none d-md-table-cell">{{ p.update_time | date:"Y-m-d H:i:s" }}</td>
+                                    <td class="d-none d-xl-table-cell">{{ p.create_time | date:"Y-m-d H:i:s" }}</td>
+                                    <td class="d-none d-xl-table-cell">
+                                        <a href="/manage/project_edit/{{ p.id }}">编辑</a>
+                                        <a href="/manage/project_delete/{{ p.id }}">删除</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers"
+                             id="datatables-dashboard-projects_paginate">
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--翻页功能-->
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="datatables-dashboard-traffic_info" role="status"
+                             aria-live="polite">Showing 1 to 8 of 8 entries
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers"
+                             id="datatables-dashboard-traffic_paginate">
+                            <ul class="pagination">
+                                <li class="paginate_button page-item previous disabled"
+                                    id="datatables-dashboard-traffic_previous">
+                                    <a href="#" aria-controls="datatables-dashboard-traffic" data-dt-idx="0"
+                                       tabindex="0" class="page-link">上一页</a>
+                                </li>
+                                <li class="paginate_button page-item active">
+                                    <a href="#" aria-controls="datatables-dashboard-traffic" data-dt-idx="1"
+                                       tabindex="0" class="page-link">1</a>
+                                </li>
+                                <li class="paginate_button page-item next disabled"
+                                    id="datatables-dashboard-traffic_next">
+                                    <a href="#" aria-controls="datatables-dashboard-traffic" data-dt-idx="2"
+                                       tabindex="0" class="page-link">下一页</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function add() {
+            {#window.open("/project/add")#}
+            //本地跳转
+            window.location.href = "/manage/project_add"
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "manage.html" %}
+{% block manage %}
+
+    <div class="container-fluid p-0">
+
+        <div class="row mb-2 mb-xl-3">
+            <div class="col-auto d-none d-sm-block">
+                <h3>编辑项目</h3>
+            </div>
+        </div>
+
+        <div class="card flex-fill">
+            <div id="datatables-dashboard-projects_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6"></div>
+                    <div class="col-sm-12 col-md-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div style="margin-left: 20px;margin-right: 20px;width: 50%">
+                            <form action="/manage/project_edit/{{ id }}/" method="post">
+                                <label for="id_name">名称:</label>
+                                {{ form.name }}<br>
+                                <label for="id_describe">描述:</label>
+                                {{ form.describe }}<br>
+                                <label for="id_status">状态:</label>
+                                {{ form.status }}<br>
+                                {% csrf_token %}
+                                <input class="btn btn-success" type="submit" value="保存">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers"
+                             id="datatables-dashboard-projects_paginate">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+    input[name='name'] {
+        display: block;
+        width: 100%;
+        height: calc(1.8125rem + 2px);
+        padding: .25rem .7rem;
+        font-size: .875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .2rem;
+        transition: border-color .15s
+    }
+
+    textarea[name='describe']{
+        display: block;
+        width: 100%;
+        padding: .25rem .7rem;
+        font-size: .875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .2rem;
+        transition: border-color .15s
+    }
+</style>
+{% endblock %}

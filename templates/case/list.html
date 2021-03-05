@@ -1,0 +1,174 @@
+{% extends "manage.html" %}<!--继承manage页面的内容-->
+{% block manage %}
+
+    <div class="container-fluid p-0">
+
+        <div class="row mb-2 mb-xl-3">
+            <div class="col-auto d-none d-sm-block">
+                <h3>用例列表</h3>
+            </div>
+        </div>
+
+        <div class="card flex-fill">
+            <div class="card-header">
+
+                {#                        <h5 class="card-title mb-0">Latest Projects</h5>#}
+                <button onclick="case_add()" type="button" class="btn btn-success" style="float: right">+添加用例</button>
+            </div>
+            <div id="datatables-dashboard-projects_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6"></div>
+                    <div class="col-sm-12 col-md-6"></div>
+                </div>
+
+                <!--列表-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="datatables-dashboard-projects"
+                               class="table table-striped my-0 dataTable no-footer" role="grid"
+                               aria-describedby="datatables-dashboard-projects_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-sort="ascending" aria-label="ID: activate to sort column descending">
+                                    ID
+                                </th>
+                                <th class="sorting_asc" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-sort="ascending" aria-label="Name: activate to sort column descending">
+                                    名称
+                                </th>
+                                <th class="d-none d-xl-table-cell sorting " tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-label="describe: activate to sort column ascending">URL
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="datatables-dashboard-projects"
+                                    rowspan="1" colspan="1"
+                                    aria-label="Status: activate to sort column ascending">请求方法
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="datatables-dashboard-projects"
+                                    rowspan="1" colspan="1"
+                                    aria-label="Status: activate to sort column ascending">所属项目
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="datatables-dashboard-projects"
+                                    rowspan="1" colspan="1"
+                                    aria-label="Status: activate to sort column ascending">所属模块
+                                </th>
+                                <th class="d-none d-xl-table-cell sorting" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-label="Update Date: activate to sort column ascending">更新时间
+                                </th>
+
+                                <th class="d-none d-md-table-cell sorting" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-label="Create Date: activate to sort column ascending">创建时间
+                                </th>
+                                <th class="d-none d-md-table-cell sorting" tabindex="0"
+                                    aria-controls="datatables-dashboard-projects" rowspan="1" colspan="1"
+                                    aria-label="Create Date: activate to sort column ascending">操作
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <!--循环取数据表中的数据，展示在列表中-->
+                            {% for c in case %}
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">{{ c.id }}</td>
+                                    <td class="d-none d-xl-table-cell">{{ c.name }}</td>
+                                    <td class="d-none d-xl-table-cell">{{ c.url }}</td>
+                                    {% if c.method == 1 %}
+                                        <td>GET</td>
+                                    {% endif %}
+                                    {% if c.method == 2 %}
+                                        <td>POST</td>
+                                    {% endif %}
+                                    <td><span class="badge badge-success">{{ c.module.project }}</span></td>
+                                    <td><span class="badge badge-success">{{ c.module }}</span></td>
+                                    <td class="d-none d-md-table-cell">{{ c.update_time | date:"Y-m-d H:i:s" }}</td>
+                                    <td class="d-none d-xl-table-cell">{{ c.create_time | date:"Y-m-d H:i:s" }}</td>
+                                    <td class="d-none d-xl-table-cell">
+                                        <a href="/case/edit_case/{{ c.id }}">编辑</a>
+                                        <a style="color: #00bdd6" onclick="delete_case({{ c.id }})">删除</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers"
+                             id="datatables-dashboard-projects_paginate">
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--翻页功能-->
+                <div class="row">
+                    <div class="col-sm-12 col-md-5" style="color: #8f95a0">
+                        <div class="dataTables_info" id="datatables-dashboard-traffic_info" role="status"
+                             aria-live="polite">当前显示的是第 {{ case.number }} 页数据
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers"
+                             id="datatables-dashboard-traffic_paginate">
+                            <ul class="pagination">
+
+                                {% if case.has_previous %}
+                                    <li class="paginate_button page-item previous "
+                                        id="datatables-dashboard-traffic_previous">
+                                        <a href="?page={{ case.previous_page_number }}"
+                                           aria-controls="datatables-dashboard-traffic" data-dt-idx="0"
+                                           tabindex="0" class="page-link">上一页</a>
+                                    </li>
+                                {% endif %}
+
+                                <li class="paginate_button page-item active">
+                                    <a href="#" aria-controls="datatables-dashboard-traffic" data-dt-idx="1"
+                                       tabindex="0" class="page-link">{{ case.number }}</a>
+                                </li>
+                                {% if case.has_next %}
+                                <li class="paginate_button page-item next"
+                                    id="datatables-dashboard-traffic_next">
+                                    <a href="?page={{ case.next_page_number }}" aria-controls="datatables-dashboard-traffic" data-dt-idx="2"
+                                       tabindex="0" class="page-link">下一页</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/jquery-2.0.2.min.js"></script>
+    <script type="text/javascript">
+        function case_add() {
+            {#window.open("/project/add")#}
+            //本地跳转
+            window.location.href = "/case/add_case"
+        }
+        function delete_case(cid){
+            var url = window.location.href;
+            console.log("rul", url);
+            if(confirm("确定要删除吗？")){
+                $.post("/case/delete_case/",{
+                    cid: cid
+                },function (resp){
+                    alert(resp.message)
+                });
+            }else {
+                return false
+            }
+            window.location.href = url;
+        }
+    </script>
+{% endblock %}

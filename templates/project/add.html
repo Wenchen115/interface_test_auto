@@ -1,0 +1,42 @@
+{% extends "manage.html" %}
+{% block manage %}
+
+    <div class="container-fluid p-0">
+
+        <div class="row mb-2 mb-xl-3">
+            <div class="col-auto d-none d-sm-block">
+                <h3>新增项目</h3>
+            </div>
+        </div>
+
+        <div class="card flex-fill">
+            <div id="datatables-dashboard-projects_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6"></div>
+                    <div class="col-sm-12 col-md-6"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div style="margin-left: 20px;margin-right: 20px;width: 50%">
+
+                            <form action="/manage/project_add" method="post">
+                                {{ form }}
+                                {% csrf_token %}
+                                <br><input class="btn btn-success" type="submit" value="保存">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers"
+                             id="datatables-dashboard-projects_paginate">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

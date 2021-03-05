@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block base %}
+
+<main id="content">
+    <!-- Hero Section -->
+    <div class="gradient-overlay-half-dark-v3 bg-img-hero" style="background-image: url(../../assets/img/1920x1080/img4.jpg);">
+      <!-- Main Content -->
+      <div class="d-lg-flex align-items-lg-center height-85vh--lg">
+        <div class="container space-2 space-0--lg mt-lg-8">
+          <div class="row justify-content-lg-between align-items-lg-center">
+            <div class="col-lg-5 mb-7 mb-lg-0">
+              <!-- Title -->
+              <span class="d-block text-white text-uppercase mb-2">Yan Bin</span>
+              <h1 class="display-4 font-size-48--md-down text-white mb-0">Interface automation test platform</h1>
+              <!-- End Title -->
+            </div>
+
+            <div class="col-lg-5">
+              <!-- Signup Form -->
+              <div class="bg-white shadow-sm rounded p-6">
+                <form class="js-validate" novalidate="novalidate" action="login/" method="post">
+                  <div class="mb-4">
+                    <h2 class="h4" style="color: darkslategray">用户登陆</h2>
+                  </div>
+
+                  <!-- Input -->
+                  <div class="js-form-message mb-3">
+                    <div class="js-focus-state input-group input-group form">
+                      <input type="text" class="form-control form__input" name="username" required="username" placeholder="用户名" aria-label="Enter your username">
+                    </div>
+                  </div>
+                  <!-- End Input -->
+
+                  <!-- Input -->
+                  <div class="js-form-message mb-3">
+                    <div class="js-focus-state input-group input-group form">
+                      <input type="password" class="form-control form__input" name="password" required="" placeholder="密码" aria-label="Enter your password">
+                    </div>
+                  </div>
+                  <!-- End Input -->
+                  {{error}}<br>
+                  {% csrf_token %}
+
+                  <button type="submit" class="btn btn-block btn-primary">登陆</button>
+                </form>
+              </div>
+              <!-- End Signup Form -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Main Content -->
+    </div>
+
+    <div class="d-lg-flex align-items-lg-center height-15vh--lg">
+      <!-- Bottom Content -->
+      <div class="container space-2 space-0--lg">
+        <!-- Slick Carousel -->
+        <div class="js-slick-carousel u-slick slick-initialized slick-slider" data-autoplay="true" data-speed="5000" data-infinite="true" data-slides-show="6" data-responsive="[{
+               &quot;breakpoint&quot;: 1200,
+               &quot;settings&quot;: {
+                 &quot;slidesToShow&quot;: 4
+               }
+             }, {
+               &quot;breakpoint&quot;: 992,
+               &quot;settings&quot;: {
+                 &quot;slidesToShow&quot;: 4
+               }
+             }, {
+               &quot;breakpoint&quot;: 768,
+               &quot;settings&quot;: {
+                 &quot;slidesToShow&quot;: 3
+               }
+             }, {
+               &quot;breakpoint&quot;: 576,
+               &quot;settings&quot;: {
+                 &quot;slidesToShow&quot;: 3
+               }
+             }, {
+               &quot;breakpoint&quot;: 480,
+               &quot;settings&quot;: {
+                 &quot;slidesToShow&quot;: 2
+               }
+             }]">
+        </div>
+      </div>
+    </div>
+    <hr class="my-0">
+  </main>
+{% endblock %}
