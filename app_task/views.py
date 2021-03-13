@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from app_manage.models import Project,Module
 from app_case.models import TestCase
@@ -26,6 +26,16 @@ def task_add(request):
     return render(request,'task/add.html')
 
 
+def task_edit(request,tid):
+    """
+    编辑任务
+    :param request:
+    :return:
+    """
+    return render(request,"task/edit.html")
+
+
+@csrf_exempt
 def case_node(request):
     """
     用例树形结构展示
@@ -60,11 +70,64 @@ def case_node(request):
                 module_list.append(module_dict)
             project_dict["children"]=module_list
             data.append(project_dict)
-        return JsonResponse({"code": 10200,
-                             "message": "success",
-                             "data": data})
+        return response(10200, "success", data)
+    elif request.method == "POST":
+        task_id = request.POST.get("tid", "")
+        task = TestTask.objects.get(id= task_id)
+        case_list = task.cases[1:-1].split(",")
+        case_list_int = []
+        for c in case_list:
+            case_list_int.append(int(c))
+
+        task_data = {
+            "taskName": task.name,
+            "taskDesc": task.describe,
+        }
+
+        data = []
+        project = Project.objects.all()
+
+        for p in project:
+            project_dict = {
+                "name": p.name,
+                "isParent": True
+            }
+            module = Module.objects.filter(project_id=p.id)
+            module_list = []
+            for m in module:
+                module_dict = {
+                    "name": m.name,
+                    "isParent": True
+                }
+                case = TestCase.objects.filter(module_id=m.id)
+                case_list = []
+                for c in case:
+                    print("", c.id, type(c.id))
+                    if c.id in case_list_int:
+                        case_dict = {
+                            "id": c.id,
+                            "name": c.name,
+                            "isParent": False,
+                            "checked": True
+                        }
+                    else:
+                        case_dict = {
+                            "id": c.id,
+                            "name": c.name,
+                            "isParent": False,
+                            "checked": False
+                        }
+                    case_list.append(case_dict)
+                module_dict["children"] = case_list
+                module_list.append(module_dict)
+            project_dict["children"] = module_list
+            data.append(project_dict)
+
+        task_data["data"] = data
+        return response(10200, "success", task_data)
+
     else:
-        return JsonResponse({"code": 10100, "message": "请求方法错误"})
+        return response(10100, "请求方法错误")
 
 
 @csrf_exempt
@@ -75,14 +138,24 @@ def task_save(request):
     :return:
     """
     if request.method == "POST":
+        task_id = request.POST.get("tid","")
         task_name = request.POST.get("name","")
         task_desc = request.POST.get("desc", "")
         task_cases = request.POST.get("cases", "")
         if task_name == "":
             return response(10102,"任务名称为空")
+        if task_id == "0":
 
-        TestTask.objects.create(name=task_name,describe=task_desc,cases=task_cases)
+            TestTask.objects.create(name=task_name,describe=task_desc,cases=task_cases)
+        else:
+            task = TestTask.objects.get(id=task_id)
+            task.name = task_name
+            task.describe = task_desc
+            task.cases = task_cases
+            task.save()
         return response()
 
     else:
         return response(10101,"请求方式错误")
+
+

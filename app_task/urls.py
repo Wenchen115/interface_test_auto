@@ -9,12 +9,11 @@ from app_task import views
 urlpatterns = [
     # 用例管理
     path('',views.list_task),
-    path('add_task/',views.task_add),
+    path('add/',views.task_add),
+
+    path('edit/<int:tid>/',views.task_edit),
     # 获取用例的树形节点（结构）
     path('case_node/', views.case_node),
-
     path('save_task/', views.task_save),
-
-
 
     ]

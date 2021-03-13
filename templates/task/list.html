@@ -78,8 +78,8 @@
 
                                     <td class="d-none d-xl-table-cell">{{ T.create_time | date:"Y-m-d H:i:s" }}</td>
                                     <td class="d-none d-xl-table-cell">
-                                        <a href="/manage/project_edit/{{ T.id }}">编辑</a>
-                                        <a href="/manage/project_delete/{{ T.id }}">删除</a>
+                                        <a href="/task/edit/{{ T.id }}">编辑</a>
+                                        <a href="/task/delete/{{ T.id }}">删除</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -136,7 +136,7 @@
         function add_task() {
             {#window.open("/project/add")#}
             //本地跳转
-            window.location.href = "/task/add_task"
+            window.location.href = "/task/add"
         }
     </script>
 {% endblock %}
