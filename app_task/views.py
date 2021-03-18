@@ -5,6 +5,7 @@ from app_manage.models import Project,Module
 from app_case.models import TestCase
 from interface_test_auto.common import response
 from app_task.models import TestTask
+from app_task.extend.task_thread import TaskThread
 # Create your views here.
 
 def list_task(request):
@@ -147,15 +148,29 @@ def task_save(request):
         if task_id == "0":
 
             TestTask.objects.create(name=task_name,describe=task_desc,cases=task_cases)
+
         else:
             task = TestTask.objects.get(id=task_id)
             task.name = task_name
             task.describe = task_desc
             task.cases = task_cases
             task.save()
+
         return response()
 
     else:
         return response(10101,"请求方式错误")
+
+
+def run_task(request,tid):
+    """
+    运行任务
+    unittest + ddt + 线程
+    :param request:
+    :return:
+    """
+    task = TaskThread(tid)
+    task.run()
+    return HttpResponseRedirect("/task/")
 
 

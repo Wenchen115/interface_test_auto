@@ -15,5 +15,6 @@ urlpatterns = [
     # 获取用例的树形节点（结构）
     path('case_node/', views.case_node),
     path('save_task/', views.task_save),
+    path('run_task/<int:tid>/', views.run_task),
 
     ]
