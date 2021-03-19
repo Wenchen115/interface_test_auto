@@ -5,6 +5,7 @@ from app_manage.models import Project,Module
 from app_case.models import TestCase
 from interface_test_auto.common import response
 from app_task.models import TestTask
+from app_task.models import TestResult
 from app_task.extend.task_thread import TaskThread
 # Create your views here.
 
@@ -173,4 +174,23 @@ def run_task(request,tid):
     task.run()
     return HttpResponseRedirect("/task/")
 
+
+def log_list(request, tid):
+    """
+    获取某一任务的历史结果
+    """
+    result = TestResult.objects.filter(task_id=tid)
+    return render(request, "task/logs.html", {"result": result})
+
+
+def get_log(request):
+    """
+    获取某一任务的历史结果
+    """
+    if request.method == "POST":
+        rid = request.POST.get("rid", "")
+        result = TestResult.objects.get(id=rid)
+        return response(data=result.result)
+    else:
+        return response(10101, "请求方法错误")
 

@@ -19,4 +19,5 @@ urlpatterns = [
     path('get_case_info/', views.get_case_info),
 
 
+
     ]

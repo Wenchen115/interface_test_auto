@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+	<testsuite errors="0" failures="0" file=".py" name="TaskTest-20210319181835" skipped="0" tests="1" time="1.434" timestamp="2021-03-19T18:18:37">
+		<testcase classname="TaskTest" file="app_task\extend\task_run.py" line="24" name="test_file_data_json_dict_dict_00001_第一个测试用例" time="1.434" timestamp="2021-03-19T18:18:37">
+			<!--test_file_data_json_dict_dict_00001_第一个测试用例-->
+		</testcase>
+	</testsuite>
+</testsuites>

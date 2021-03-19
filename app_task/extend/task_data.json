@@ -1,0 +1,1 @@
+{"\u7b2c\u4e00\u4e2a\u6d4b\u8bd5\u7528\u4f8b": {"url": "http://httpbin.org/get", "method": 1, "header": "{}", "per_type": 1, "per_value": "{\n  \"key1\": \"value1\",\n  \"key2\": \"value2\"\n}", "assert_type": 1, "assert_text": "value2"}}

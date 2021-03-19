@@ -14,16 +14,19 @@ EXTEND_DIR = os.path.dirname(os.path.abspath(__file__))
 TASK_DATA = os.path.join(EXTEND_DIR, "task_data.json")
 TASK_RESULTS = os.path.join(EXTEND_DIR, "task_results.xml")
 
+print(TASK_DATA)
+print(TASK_RESULTS)
+
 
 @ddt
 class TaskTest(unittest.TestCase):
 
     @file_data(TASK_DATA)
-    def test_file_data_json_dict_dict(self, url, method, header, parameter_type, parameter_body, assert_type,
+    def test_file_data_json_dict_dict(self, url, method, header, per_type, per_value, assert_type,
                                       assert_text):
 
         header = json.loads(header)
-        per_value = json.loads(parameter_body)
+        per_value = json.loads(per_value)
 
         if method == 1:
             r = requests.get(url, params=per_value, headers=header)
@@ -33,13 +36,13 @@ class TaskTest(unittest.TestCase):
                 self.assertEquals(assert_text, r.text)
 
         elif method == 2:
-            if parameter_type == 1:
+            if per_type == 1:
                 r = requests.post(url, data=per_value, headers=header)
                 if assert_type == 1:
                     self.assertIn(assert_text, r.text)
                 if assert_type == 2:
                     self.assertEquals(assert_text, r.text)
-            if parameter_type == 1:
+            if per_type == 1:
                 r = requests.post(url, json=per_value, headers=header)
                 if assert_type == 1:
                     self.assertIn(assert_text, r.text)

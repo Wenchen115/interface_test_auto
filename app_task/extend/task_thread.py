@@ -33,8 +33,8 @@ class TaskThread:
                 "url": case.url,
                 "method": case.method,
                 "header": case.header,
-                "parameter_type": case.parameter_type,
-                "parameter_body": case.parameter_body,
+                "per_type": case.per_type,
+                "per_value": case.per_value,
                 "assert_type": case.assert_type,
                 "assert_text": case.assert_text,
             }
@@ -45,7 +45,7 @@ class TaskThread:
 
         print("运行的任务文件：", TASK_RUN)
 
-        os.system("python"+TASK_RUN)
+        os.system("python"+" " + TASK_RUN)
         sleep(2)
 
         # 4、保存结果
