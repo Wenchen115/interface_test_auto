@@ -45,7 +45,7 @@ class TaskThread:
 
         print("运行的任务文件：", TASK_RUN)
 
-        os.system("python"+" " + TASK_RUN)
+        os.system("python"+" " + TASK_RUN)  # 这段代码最耗时
         sleep(2)
 
         # 4、保存结果
